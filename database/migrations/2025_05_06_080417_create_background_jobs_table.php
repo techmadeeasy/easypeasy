@@ -1,5 +1,6 @@
 <?php
 
+use App\JobStatusEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -23,6 +24,8 @@ return new class extends Migration
             $table->timestamp('reserved_at')->nullable()->index();
             $table->timestamp('completed_at')->nullable()->index();
             $table->text('last_error')->nullable();
+            $table->enum('status', JobStatusEnum::values())
+                ->default(JobStatusEnum::QUEUEUED->value);
             $table->timestamps();
         });
     }

@@ -1,11 +1,13 @@
 <?php
 
+use App\Jobs\GenerateCsvFileJob;
 use App\Jobs\TestJob;
 
 return [
     // Register allowed job classes and their permitted methods
     'allowed_jobs' => [
         TestJob::class => ['handle'],
+        GenerateCsvFileJob::class => ['handle'],
         // Add your job classes and allowed methods here
     ],
     // Default priority for new jobs (lower = higher priority)
