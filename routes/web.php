@@ -8,5 +8,5 @@ Route::get('/', function () {
         'handle',
         ['param1', 'param2']
     );
-    return view('welcome');
+//    return view('welcome');
 });
