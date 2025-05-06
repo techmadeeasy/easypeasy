@@ -21,8 +21,8 @@ class BackgroundJob extends Component
     {
         $job = \App\Models\BackgroundJob::find($jobId);
         if ($job) {
-            $job->update(['status', \App\JobStatusEnum::CANCELLED->value]);
-            $this->loadJobs();
+            $job->status =  \App\JobStatusEnum::CANCELLED->value;
+            $job->save();
             session()->flash('message', 'Job cancelled successfully.');
         } else {
             session()->flash('error', 'Job not found.');

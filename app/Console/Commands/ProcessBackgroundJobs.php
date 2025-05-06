@@ -21,6 +21,7 @@ class ProcessBackgroundJobs extends Command
                 ->whereNull('reserved_at')
                 ->whereNull('completed_at')
                 ->where('available_at', '<=', Carbon::now())
+                ->where('status','<>' ,JobStatusEnum::CANCELLED->value)
                 ->orderBy('priority', 'asc')
                 ->orderBy('available_at', 'asc')
                 ->lockForUpdate()
@@ -30,7 +31,6 @@ class ProcessBackgroundJobs extends Command
                 // Mark as reserved and update status to running
                 DB::table(config('background-jobs.table'))
                     ->where('id', $job->id)
-                    ->where('status','<>' ,JobStatusEnum::CANCELLED->value)
                     ->update([
                         'reserved_at' => Carbon::now(),
                         'status'      => JobStatusEnum::RUNNING->value,
