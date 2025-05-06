@@ -30,6 +30,7 @@ class ProcessBackgroundJobs extends Command
                 // Mark as reserved and update status to running
                 DB::table(config('background-jobs.table'))
                     ->where('id', $job->id)
+                    ->where('status','<>' ,JobStatusEnum::CANCELLED->value)
                     ->update([
                         'reserved_at' => Carbon::now(),
                         'status'      => JobStatusEnum::RUNNING->value,
