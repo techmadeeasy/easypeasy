@@ -9,6 +9,8 @@ $app = require __DIR__ . '/bootstrap/app.php';
 $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
 $kernel->bootstrap();
 
+$argv = $GLOBALS['argv'] ?? [];
+
 // Parse CLI arguments
 array_shift($argv); // remove script name
 if (count($argv) < 2) {

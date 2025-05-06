@@ -16,7 +16,7 @@ if (! function_exists('runBackgroundJob')) {
      * @param int    $priority Job priority (lower number = higher priority)
      * @throws InvalidArgumentException if the job or method is not allowed.
      */
-    function runBackgroundJob(string $class, string $method, array $params = [], int $delay = 0, int $priority = 5): void
+    function runBackgroundJob(string $class, string $method, array $params = [], int $delay = 0, int $priority = 5): bool
     {
         $config = config('background-jobs');
         $allowedJobs = $config['allowed_jobs'] ?? [];
@@ -48,5 +48,7 @@ if (! function_exists('runBackgroundJob')) {
             'max_attempts' => config('background-jobs.retry_attempts'),
             'status'       => JobStatusEnum::QUEUEUED->value,
         ]);
+
+        return true;
     }
 }
