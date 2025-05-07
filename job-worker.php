@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\DB;
 
 require __DIR__ . '/vendor/autoload.php';
 

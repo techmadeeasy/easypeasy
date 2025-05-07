@@ -70,4 +70,15 @@
     <div class="my-4 flex justify-end">
         {{ $jobs->links() }}
     </div>
+    <script>
+        window.addEventListener('background-job-completed', event => {
+            Livewire.emit('backgroundJobCompleted');
+        });
+        window.addEventListener('background-job-failed', event => {
+            Livewire.emit('backgroundJobFailed');
+        });
+        window.addEventListener('background-job-started', event => {
+            Livewire.emit('backgroundJobStarted');
+        });
+    </script>
 </div>

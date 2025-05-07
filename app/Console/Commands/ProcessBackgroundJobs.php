@@ -21,13 +21,15 @@ class ProcessBackgroundJobs extends Command
                 ->whereNull('reserved_at')
                 ->whereNull('completed_at')
                 ->where('available_at', '<=', Carbon::now())
-                ->where('status','<>' ,JobStatusEnum::CANCELLED->value)
+                ->where('status','<>', JobStatusEnum::CANCELLED->value)
                 ->orderBy('priority', 'asc')
                 ->orderBy('available_at', 'asc')
                 ->lockForUpdate()
                 ->first();
 
             if ($job) {
+
+                event(new \App\Events\BackgroundJobStarted($job->id, $job->job_class, $job->job_method));
                 // Mark as reserved and update status to running
                 DB::table(config('background-jobs.table'))
                     ->where('id', $job->id)
@@ -49,6 +51,7 @@ class ProcessBackgroundJobs extends Command
                             'status'       => JobStatusEnum::SUCCESS->value,
                         ]);
 
+                    event(new \App\Events\BackgroundJobCompleted($job->id, $job->job_class, $job->job_method));
                     error_log("[" . now() . "] " . $job->job_class . "@" . $job->job_method . " success" . PHP_EOL, 3, storage_path('logs/background_jobs_errors.log'));
                 } catch (\Throwable $e) {
                     $attempts      = $job->attempts + 1;
@@ -71,7 +74,8 @@ class ProcessBackgroundJobs extends Command
                     DB::table(config('background-jobs.table'))
                         ->where('id', $job->id)
                         ->update($updates);
-
+// In the catch block for a failed job:
+                    event(new \App\Events\BackgroundJobFailed($job->id, $job->job_class, $job->job_method, $e->getMessage()));
                     error_log("[" . now() . "] " . $job->job_class . "@" . $job->job_method . " failure: " . $e->getMessage() . PHP_EOL, 3, storage_path('logs/background_jobs_errors.log'));
                 }
             } else {

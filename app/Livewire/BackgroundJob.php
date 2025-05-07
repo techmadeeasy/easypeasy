@@ -9,6 +9,18 @@ class BackgroundJob extends Component
     use WithPagination;
     protected $paginationTheme = 'tailwind';
 
+    protected $listeners = [
+        'backgroundJobCompleted' => 'reloadJobs',
+        'backgroundJobFailed' => 'reloadJobs',
+        'backgroundJobStarted' => 'reloadJobs',
+    ];
+
+    public function reloadJobs()
+    {
+        $this->resetPage();
+        // Optionally refresh other data here.
+    }
+
     public function render()
     {
         $jobs = $this->loadJobs();
@@ -27,7 +39,6 @@ class BackgroundJob extends Component
         } else {
             session()->flash('error', 'Job not found.');
         }
-
         $this->resetPage();
     }
 
