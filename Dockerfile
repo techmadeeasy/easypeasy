@@ -1,6 +1,6 @@
 FROM php:8.4-fpm-alpine
 
-# Install system dependencies and PHP extensions
+# Install system dependencies, PHP extensions, and NodeJS with npm
 RUN apk update && apk add --no-cache \
         build-base \
         libpng-dev \
@@ -13,6 +13,8 @@ RUN apk update && apk add --no-cache \
         curl \
         zip \
         bash \
+        nodejs \
+        npm \
     && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 
 # Install Composer globally

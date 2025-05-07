@@ -1,8 +1,22 @@
 #!/bin/sh
 set -e
 
+# Copy environment file if it does not exist
+if [ ! -f .env ]; then
+    cp .env.example .env
+fi
+
+# Generate application key if not already set
+php artisan key:generate --force
+
 # Install PHP dependencies
 composer install --no-interaction --prefer-dist
+
+# Install Node dependencies
+npm install
+
+# Build front-end assets
+npm run build
 
 # Run database migrations
 php artisan migrate --force
