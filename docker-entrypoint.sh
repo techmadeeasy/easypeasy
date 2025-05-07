@@ -6,11 +6,11 @@ if [ ! -f .env ]; then
     cp .env.example .env
 fi
 
-# Generate application key if not already set
-php artisan key:generate --force
-
 # Install PHP dependencies
 composer install --no-interaction --prefer-dist
+
+# Generate application key if not already set
+php artisan key:generate --force
 
 # Install Node dependencies
 npm install
