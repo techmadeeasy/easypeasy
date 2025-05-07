@@ -99,11 +99,11 @@ You can also whitelist your job classes and methods in the same config.
 
 ## Dashboard
 
-A simple web UI is available at `/background-jobs` to view:
+A simple web UI is available at `/` to view:
 
 - 📋 Job ID, class, method
 - 🎯 Priority & next run time
-- 🟢 Status (Pending / Error / Completed)
+- 🟢 Status (Queued / Failure / Success)
 - 🔄 Attempt counts
 
 Feel free to extend it with filtering, cancelling, or auto-refresh.
